@@ -1,1 +1,1 @@
-# go-dashboard
+# Go Dashboard
