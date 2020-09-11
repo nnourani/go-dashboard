@@ -8,7 +8,11 @@ Vue.use(Vuex)
 
 const state = {
   sidebarShow: 'responsive',
-  sidebarMinimize: false
+  sidebarMinimize: false,
+  accessToken:'',
+  refreshToken:'',
+  isLogged: false,
+  user: ''
 }
 
 const mutations = {
