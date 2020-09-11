@@ -36,6 +36,16 @@ func UserCreate(c *fiber.Ctx) {
 	}
 }
 
+// UserLogin registers a user
+func UserLogin(c *fiber.Ctx) {
+	if err := c.JSON(fiber.Map{
+		"success": true,
+		"token":   "8555858585858555",
+	}); err != nil {
+		c.Next(err)
+	}
+}
+
 // DeleteUser registers a user
 func DeleteUser(c *fiber.Ctx) {
 	id, _ := strconv.Atoi(c.FormValue("id"))

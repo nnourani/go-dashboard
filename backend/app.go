@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 
+	"github.com/gofiber/cors"
 	"github.com/gofiber/fiber"
 	"github.com/gofiber/fiber/middleware"
 	"github.com/nnourani/go-dashboard/handlers"
@@ -22,15 +23,18 @@ func main() {
 
 	app.Use(middleware.Recover())
 	app.Use(middleware.Logger())
+	app.Use(cors.New())
 
-	app.Static("/", "./static/frontend/.nuxt/server.js")
-	/*app.Get("/", func(c *fiber.Ctx) {
-		if err := c.Status(200).SendFile("./static/public/dashboard-client/dist/index.html"); err != nil {
+	app.Get("/", func(c *fiber.Ctx) {
+		if err := c.Status(200).SendFile("./static/public/index.html"); err != nil {
 			c.Next(err)
 		}
-	})*/
+	})
 
 	v1 := app.Group("/api/v1")
+
+	// auth := v1.Group("/auth")
+	v1.Post("/login", handlers.UserLogin)
 
 	v1.Get("/users", handlers.UserList)
 	v1.Post("/users", handlers.UserCreate)

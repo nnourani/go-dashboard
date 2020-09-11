@@ -30,10 +30,16 @@ function configRoutes() {
       redirect: '/dashboard',
       name: 'Home',
       component: TheContainer,
+      meta: {
+        requireAuth: true
+      },
       children: [{
           path: 'dashboard',
           name: 'Dashboard',
-          component: Dashboard
+          component: Dashboard,
+          meta: {
+            requireAuth: true
+          },
         },
         {
           path: 'theme',
@@ -47,12 +53,18 @@ function configRoutes() {
           children: [{
               path: 'colors',
               name: 'Colors',
-              component: Home
+              component: Home,
+              meta: {
+                requireAuth: true
+              },
             },
             {
               path: 'typography',
               name: 'Typography',
-              component: About
+              component: About,
+              meta: {
+                requireAuth: true
+              },
             }
           ]
         },
@@ -76,16 +88,14 @@ function configRoutes() {
 }
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['/login', '/register'];
-  const authRequired = !publicPages.includes(to.path);
-  const loggedIn = localStorage.getItem('user');
-
-  console.log(authRequired)
-  console.log(loggedIn)
-  if (authRequired && !loggedIn) {
-    return next('/login')
+  // const publicPages = ['/login', '/register'];
+  //const authRequired = !publicPages.includes(to.path);
+  if (to.matched.some(route => route.meta.requireAuth)) {
+    const loggedIn = localStorage.getItem('user');
+    if (!loggedIn) {
+      return next('/login')
+    }
   }
-
   next()
 })
 

@@ -6,25 +6,22 @@
           <CCardGroup>
             <CCard class="p-4">
               <CCardBody>
-                <CForm>
+                <CForm @submit.prevent="handleSubmit">
                   <h1>Login</h1>
                   <p class="text-muted">Sign In to your account</p>
-                  <CInput
-                    placeholder="Username"
-                    autocomplete="username email"
-                  >
-                    <template #prepend-content><CIcon name="cil-user"/></template>
+                  <CInput v-model="username" placeholder="Username" autocomplete="username email">
+                    <template #prepend-content>
+                      <CIcon name="cil-user" />
+                    </template>
                   </CInput>
-                  <CInput
-                    placeholder="Password"
-                    type="password"
-                    autocomplete="curent-password"
-                  >
-                    <template #prepend-content><CIcon name="cil-lock-locked"/></template>
+                  <CInput v-model="password" placeholder="Password" type="password" autocomplete="curent-password">
+                    <template #prepend-content>
+                      <CIcon name="cil-lock-locked" />
+                    </template>
                   </CInput>
                   <CRow>
                     <CCol col="6" class="text-left">
-                      <CButton color="primary" class="px-4">Login</CButton>
+                      <CButton color="primary" @click="handleSubmit" class="px-4">Login</CButton>
                     </CCol>
                     <CCol col="6" class="text-right">
                       <CButton color="link" class="px-0">Forgot password?</CButton>
@@ -43,13 +40,7 @@
               <CCardBody>
                 <h2>Sign up</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <CButton
-                  color="light"
-                  variant="outline"
-                  size="lg"
-                >
-                  Register Now!
-                </CButton>
+                <CButton color="light" variant="outline" size="lg">Register Now!</CButton>
               </CCardBody>
             </CCard>
           </CCardGroup>
@@ -61,6 +52,32 @@
 
 <script>
 export default {
-  name: 'Login'
-}
+  name: "Login",
+  data() {
+    return {
+      username: "",
+      password: "",
+      submitted: false,
+    };
+  },
+  computed: {
+    loggingIn() {
+      return this.$store.state.authentication.status.loggingIn;
+    },
+  },
+  created() {
+    // reset login status
+    this.$store.dispatch("authentication/logout");
+  },
+  methods: {
+    handleSubmit(e) {
+      this.submitted = true;
+      const { username, password } = this;
+      const { dispatch } = this.$store;
+      if (username && password) {
+        dispatch("authentication/login", { username, password });
+      }
+    },
+  },
+};
 </script>

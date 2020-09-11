@@ -1,6 +1,10 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import { alert } from './alert.module';
+import { authentication } from './authentication.module';
+import { users } from './users.module';
 Vue.use(Vuex)
+
 
 const state = {
   sidebarShow: 'responsive',
@@ -22,6 +26,11 @@ const mutations = {
 }
 
 export default new Vuex.Store({
+  modules: {
+    alert,
+    authentication,
+    users
+  },
   state,
   mutations
 })
